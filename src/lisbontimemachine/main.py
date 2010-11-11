@@ -67,6 +67,7 @@ class ListJSON(webapp.RequestHandler):
     def get(self):        
         latitude = self.request.get('latitude', '')
         longitude = self.request.get('longitude', '')
+        self.response.headers["Content-Type"] = "application/json"
         self.response.out.write(simplejson.dumps(get_image_elements(latitude, longitude)))
 
 class MainHandler(webapp.RequestHandler):
