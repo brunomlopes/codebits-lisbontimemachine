@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import os
+
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 
@@ -48,7 +50,8 @@ class ListStuff(webapp.RequestHandler):
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
-        self.response.out.write('<html><head><title>Lisbon Timemachine</title><body>LISBON TIMEMACHINE</body>')
+        path = os.path.join(os.path.dirname(__file__), 'static/index.html')        
+        self.response.out.write(open(path, 'r').read())
 
 
 def main():
