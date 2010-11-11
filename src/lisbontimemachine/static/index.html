@@ -34,23 +34,23 @@
     var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"),panoramaOptions);
     map.setStreetView(panorama);
 
-var cafe = new google.maps.LatLng(	38.722087, -9.167347);
+	var cafe = new google.maps.LatLng(	38.722087, -9.167347);
   // Setup the markers on the map
   var cafeMarkerImage =
       new google.maps.MarkerImage('http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=cafe|FFFF00');
-  var cafeMarker = new google.maps.Marker({
-      position: cafe,
-      map: panorama,
-      icon: cafeMarkerImage,
-      title: 'Cafe'
-  });
+	  var cafeMarker = new google.maps.Marker({
+	      position: cafe,
+	      map: panorama,
+	      icon: cafeMarkerImage,
+	      title: 'Cafe'
+	  });
 
-  var cafeMarkerMap = new google.maps.Marker({
-      position: cafe,
-      map: map,
-      icon: cafeMarkerImage,
-      title: 'Cafe'
-  });
+	  var cafeMarkerMap = new google.maps.Marker({
+	      position: cafe,
+	      map: map,
+	      icon: cafeMarkerImage,
+	      title: 'Cafe'
+	  });
   }
   $(document).ready(function() {
       initialize();
