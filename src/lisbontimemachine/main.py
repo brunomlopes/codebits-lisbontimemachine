@@ -1,30 +1,58 @@
 #!/usr/bin/env python
-#
-# Copyright 2007 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 
+from google.appengine.api import urlfetch
+
+import xml.etree.ElementTree as ET
+
+token = '14IIACN92O60YV6L'
+base = "http://cml-hub.mrnet.pt/CML_webservices/rest/%s" % token
+
+def server_call(params):
+    url = '%s/%s' % (base, params)
+    result = urlfetch.fetch(url)
+    if result.status_code == 200:
+        return ET.XML(result.content)
+    else:
+        return None
+
+
+
+class ListStuff(webapp.RequestHandler):
+    def get(self):        
+        latitude = self.request.get('latitude', '')
+        longitude = self.request.get('longitude', '')
+        url = 'collection/fotografias/articles/latitude/%s/longitude/%s' % (latitude, longitude)
+        tree = server_call(url)
+        element = tree.find("listArticles/articles")        
+        for i in element.getchildren():            
+            article_id = i.text
+            
+            article_element = server_call('collection/fotografias/article/%s' % article_id)
+            article_title = article_element.findtext('getArticle/article/titulo')
+            article_date = article_element.findtext('getArticle/article/data')
+            article_image = article_element.findtext('getArticle/article/image')
+            article_latitude = article_element.findtext('getArticle/article/latitude')            
+            article_longitude = article_element.findtext('getArticle/article/longitude')
+            
+            output = """
+<p>
+<h1>%(article_title)s, %(article_date)s</h1>
+<h2>%(article_longitude)s,%(article_latitude)s</h2>
+<img src="%(article_image)s" alt="%(article_title)s"/>
+</p>
+"""  % locals()  
+            
+            self.response.out.write(output)
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
-        self.response.out.write('Hello world!')
+        self.response.out.write('<html><head><title>Lisbon Timemachine</title><body>LISBON TIMEMACHINE</body>')
 
 
 def main():
-    application = webapp.WSGIApplication([('/', MainHandler)],
+    application = webapp.WSGIApplication([('/', MainHandler), ('/list', ListStuff)],
                                          debug=True)
     util.run_wsgi_app(application)
 
