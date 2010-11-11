@@ -8,6 +8,9 @@ from google.appengine.api import urlfetch
 
 import xml.etree.ElementTree as ET
 from django.utils import simplejson
+from google.appengine.api import memcache
+
+import logging
 
 
 token = '14IIACN92O60YV6L'
@@ -29,21 +32,30 @@ def server_get_photo(article_id):
     return server_call('collection/fotografias/article/%s' % article_id)
 
 def get_image_elements(latitude, longitude):
-    tree = server_list_photos(latitude, longitude)
-    element = tree.find("listArticles/articles")
-    image_elements = []      
-    for i in element.getchildren():            
-        article_id = i.text        
-        article_element = server_get_photo(article_id)
-        photo_item = {
-            'id': article_id,
-            'title': article_element.findtext('getArticle/article/titulo'),
-            'date': article_element.findtext('getArticle/article/data'),
-            'image_url': article_element.findtext('getArticle/article/image'),
-            'latitude': article_element.findtext('getArticle/article/latitude'),            
-            'longitude': article_element.findtext('getArticle/article/longitude')
-        }
+    
+    article_ids = memcache.get('photos_%s_%s' % (latitude, longitude))
+    if not article_ids:
+        logging.error('cache miss for photo list %s %s', latitude, longitude)
+        tree = server_list_photos(latitude, longitude)
+        element = tree.find("listArticles/articles")    
+        article_ids = [i.text for i in element.getchildren()]
+        memcache.set('photos_%s_%s' % (latitude, longitude), article_ids, 60 * 10)
         
+    image_elements = []    
+    for article_id in article_ids:            
+        photo_item = memcache.get('photo_%s' % article_id)
+        if not photo_item:
+            logging.error('cache miss for photo item %s', article_id)
+            article_element = server_get_photo(article_id)
+            photo_item = {
+                'id': article_id,
+                'title': article_element.findtext('getArticle/article/titulo'),
+                'date': article_element.findtext('getArticle/article/data'),
+                'image_url': article_element.findtext('getArticle/article/image'),
+                'latitude': article_element.findtext('getArticle/article/latitude'),            
+                'longitude': article_element.findtext('getArticle/article/longitude')
+            }
+            memcache.set('photo_%s' % article_id, photo_item, 60 * 10)
         image_elements.append(photo_item)
     return image_elements
 
