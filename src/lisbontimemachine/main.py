@@ -7,6 +7,8 @@ from google.appengine.ext.webapp import util
 from google.appengine.api import urlfetch
 
 import xml.etree.ElementTree as ET
+from django.utils import simplejson
+
 
 token = '14IIACN92O60YV6L'
 base = "http://cml-hub.mrnet.pt/CML_webservices/rest/%s" % token
@@ -61,12 +63,11 @@ class ListHTML(webapp.RequestHandler):
         for image_element in get_image_elements(latitude, longitude):
             self.response.out.write(image_element_html_template % image_element)
 
-class ListJSONL(webapp.RequestHandler):
+class ListJSON(webapp.RequestHandler):
     def get(self):        
         latitude = self.request.get('latitude', '')
         longitude = self.request.get('longitude', '')
-        for image_element in get_image_elements(latitude, longitude):
-            self.response.out.write(image_element_html_template % image_element)
+        self.response.out.write(simplejson.dumps(get_image_elements(latitude, longitude)))
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
@@ -75,7 +76,7 @@ class MainHandler(webapp.RequestHandler):
 
 
 def main():
-    application = webapp.WSGIApplication([('/', MainHandler), ('/list', ListHTML)],
+    application = webapp.WSGIApplication([('/', MainHandler), ('/list', ListHTML), ('/list.json', ListJSON)],
                                          debug=True)
     util.run_wsgi_app(application)
 
