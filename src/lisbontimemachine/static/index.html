@@ -12,7 +12,8 @@
 		<script language="javascript">
 			var map = null;
 			var panorama = null;
-		
+			var lastInfoWindow = null;
+			
 			function initializeMap() {
 				var startPoint = new google.maps.LatLng(38.7220073, -9.1673903);
 				
@@ -81,15 +82,36 @@
 						      title: item.date + ' - ' + item.title
 						  });
 						
-						var tooltipHTML = "<img src='" + item.image_url + "' />";
+						
 						
 						 var mapInfowindow = new google.maps.InfoWindow();
-
+						 var tooltipHTML = item.title;
 					     mapInfowindow.setContent(tooltipHTML);
-					
+					/*
 						 google.maps.event.addListener(mapMarker, 'click', function() {
 						 	mapInfowindow.open(map, mapMarker);
 						 });
+					*/	
+						google.maps.event.addListener(mapMarker, 'click', function() { 	
+							if (lastInfoWindow != null) {
+								lastInfoWindow.close();
+								lastInfoWindow = null;
+								
+							}
+							map.setCenter(mapMarker.position);
+							panorama.setPosition(mapMarker.position);
+							
+							
+							
+							mapInfowindow.open(map, mapMarker);
+							
+							lastInfoWindow = mapInfowindow;
+							
+						//	panorama.setPov({heading: 140, pitch: +10, zoom: 1});
+						var imgHTML = "<img src='" + item.image_url + "' />";
+						$('#photoViewer').html(imgHTML);
+							//$("#photoViewer").html("<span class='red'>Hello <b>Again</b></span>");
+						});
 
 						  var panoramaMarker = new google.maps.Marker({
 						      position: point,
@@ -117,14 +139,14 @@
 		</script>
 	</head>
 
-	<body> 
-	  <div id="map_canvas" style="width: 400px; height: 300px"></div> 
-	  <div id="pano" style="position:absolute; left:410px; top: 8px; width: 400px; height: 300px;"></div> 
-
-
+	<body>
+		<div id="map_canvas" style="width: 400px; height: 300px"></div> 
+		<div id="pano" style="position:absolute; left:410px; top: 8px; width: 400px; height: 300px;"></div> 
+		
+		
+		<div id="photoViewer" style="width: 400px; height: 300px"></div> 
 	
 
-	<input type="button" onclick="mapCenter();" value="Center" />
 
 	</body> 
  
