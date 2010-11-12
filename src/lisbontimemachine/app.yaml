@@ -7,6 +7,9 @@ handlers:
 - url: /favicon.ico
   static_files: static/favicon.ico
   upload: static/favicon.ico
+- url: /site.css
+  static_files: static/site.css
+  upload: static/site.css
 - url: /js/yqlgeo.js
   static_files: js/yqlgeo.js
   upload: js/yqlgeo.js
