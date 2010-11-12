@@ -80,78 +80,40 @@
 						      icon: pinImg,
 						      title: item.date + ' - ' + item.title
 						  });
+						
+						var tooltipHTML = "<img src='" + item.image_url + "' />";
+						
+						 var mapInfowindow = new google.maps.InfoWindow();
+
+					     mapInfowindow.setContent(tooltipHTML);
+					
+						 google.maps.event.addListener(mapMarker, 'click', function() {
+						 	mapInfowindow.open(map, mapMarker);
+						 });
 
 						  var panoramaMarker = new google.maps.Marker({
 						      position: point,
 						      map: panorama,
 						      icon: pinImg,
 						      title: item.date + ' - ' + item.title
-						  });				
+						  });
+						
+		
+						
+						google.maps.event.addListener(panoramaMarker, 'click', function() {
+						 	mapInfowindow.open(panorama, panoramaMarker);
+						 });
+									
 				    });
 				  });
 				
 			}
 		
-		  function initializeOLD() {
-		    var fenway = new google.maps.LatLng(38.7220073, -9.1673903);
-		    var mapOptions = {
-		      center: fenway,
-		      zoom: 14,
-		      mapTypeId: google.maps.MapTypeId.ROADMAP,
-		      streetViewControl: true
-		    };
 		
-		
-		    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-		
-		    var panoramaOptions = {
-		      position: fenway,
-		      pov: {
-		        heading: 34,
-		        pitch: 10,
-		        zoom: 1
-		      }
-		    };
-		    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"),panoramaOptions);
-		    map.setStreetView(panorama);
+			$(document).ready(function() {
+				initializeMap();
+			});
 
-			var cafe = new google.maps.LatLng(	38.722087, -9.167347);
-		  // Setup the markers on the map
-		  var cafeMarkerImage =
-		      new google.maps.MarkerImage('http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=cafe|FFFF00');
-			  var cafeMarker = new google.maps.Marker({
-			      position: cafe,
-			      map: panorama,
-			      icon: cafeMarkerImage,
-			      title: 'Cafe'
-			  });
-
-			  var cafeMarkerMap = new google.maps.Marker({
-			      position: cafe,
-			      map: map,
-			      icon: cafeMarkerImage,
-			      title: 'Cafe'
-			  });
-		  }
-
-
-		  $(document).ready(function() {
-		      initializeMap();
-		  });
-
-
-
-			function mapCenter() {
-				alert('pim');
-
-				var center = map.getCenter();
-
-				alert(center);
-
-
-				return map.getCenter();
-
-			}
 		</script>
 	</head>
 
