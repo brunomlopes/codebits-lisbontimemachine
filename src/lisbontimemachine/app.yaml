@@ -10,6 +10,9 @@ handlers:
 - url: /site.css
   static_files: static/site.css
   upload: static/site.css
+- url: /oldbit.png
+  static_files: static/oldbit.png
+  upload: static/oldbit.png
 - url: /js/yqlgeo.js
   static_files: js/yqlgeo.js
   upload: js/yqlgeo.js
