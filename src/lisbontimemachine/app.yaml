@@ -16,5 +16,11 @@ handlers:
 - url: /js/yqlgeo.js
   static_files: js/yqlgeo.js
   upload: js/yqlgeo.js
+- url: /js/font.js
+  static_files: static/js/Harrington_400.font.js
+  upload: static/js/Harrington_400.font.js
+- url: /js/cufon-yui.js
+  static_files: static/js/cufon-yui.js
+  upload: static/js/cufon-yui.js
 - url: .*
   script: main.py
