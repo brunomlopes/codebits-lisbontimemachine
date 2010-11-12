@@ -87,9 +87,16 @@ class MainHandler(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'static/index.html')        
         self.response.out.write(open(path, 'r').read())
 
-
+class GeoHandler(webapp.RequestHandler):
+    def get(self):
+        path = os.path.join(os.path.dirname(__file__), 'static/geoloc.html')        
+        self.response.out.write(open(path, 'r').read())
+        
 def main():
-    application = webapp.WSGIApplication([('/', MainHandler), ('/list', ListHTML), ('/list.json', ListJSON)],
+    application = webapp.WSGIApplication([('/', MainHandler), 
+                                          ('/geoloc', GeoHandler), 
+                                          ('/list', ListHTML), 
+                                          ('/list.json', ListJSON)],
                                          debug=True)
     util.run_wsgi_app(application)
 
