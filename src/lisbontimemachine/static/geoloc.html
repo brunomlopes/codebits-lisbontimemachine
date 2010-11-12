@@ -91,7 +91,7 @@
     function initiate_geolocation() {  
         if (navigator.geolocation)  
         {  
-            navigator.geolocation.getCurrentPosition(handle_geolocation_query, handle_errors);
+            navigator.geolocation.getCurrentPosition(handle_geolocation_query, handle_errors,{maximumAge:600000, timeout:0});
         }  
         else  
         {  
