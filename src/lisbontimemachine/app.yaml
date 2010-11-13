@@ -10,9 +10,9 @@ handlers:
 - url: /site.css
   static_files: static/site.css
   upload: static/site.css
-- url: /oldbit.png
-  static_files: static/oldbit.png
-  upload: static/oldbit.png
+- url: /OldBit.png
+  static_files: static/OldBit.png
+  upload: static/OldBit.png
 - url: /apple-touch-icon.png
   static_files: static/apple-touch-icon.png
   upload: static/apple-touch-icon.png
