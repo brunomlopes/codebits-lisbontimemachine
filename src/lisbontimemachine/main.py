@@ -58,7 +58,7 @@ def get_image_elements(latitude, longitude):
                 'longitude': article_element.findtext('getArticle/article/longitude')
             }
             
-            accepted = AcceptedSuggestion.get_by_key_name(photo_item)
+            accepted = AcceptedSuggestion.get_by_key_name(article_id)
             if accepted is not None:
                 suggestion = Suggestion.get(accepted.suggestion)
                 photo_item["is_suggestion"] = True
@@ -157,7 +157,7 @@ class SuggestionHandler(webapp.RequestHandler):
                 'pitch':s.pitch,
                 'zoom':s.zoom,
                 'photo_id':s.photo_id} for s in suggestions]
-        # self.response.headers["Content-Type"] = "application/json"
+        self.response.headers["Content-Type"] = "application/json"
         self.response.out.write(simplejson.dumps(suggestions_json))        
 
 class Suggestion(db.Model):
