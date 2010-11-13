@@ -93,6 +93,11 @@ class GeoHandler(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'static/geoloc.html')        
         self.response.out.write(open(path, 'r').read())
 
+class AboutHandler(webapp.RequestHandler):
+    def get(self):
+        path = os.path.join(os.path.dirname(__file__), 'static/about.html')        
+        self.response.out.write(open(path, 'r').read())
+
 class SuggestionHandler(webapp.RequestHandler):
     def post(self):
         latitude = self.request.get('latitude','')
@@ -136,7 +141,8 @@ class Suggestion(db.Model):
     
 
 def main():
-    application = webapp.WSGIApplication([('/', MainHandler), 
+    application = webapp.WSGIApplication([('/', MainHandler),
+                                          ('/about', AboutHandler), 
                                           ('/geoloc', GeoHandler), 
                                           ('/suggestion', SuggestionHandler),
                                           ('/list', ListHTML), 
