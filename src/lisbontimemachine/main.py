@@ -115,8 +115,11 @@ class AcceptedSuggestionHandler(webapp.RequestHandler):
         suggestion_id = self.request.get("suggestion_id","")
         
         accepted = AcceptedSuggestion.get_or_insert(key_name=photo_id)
-        accepted.suggestion = db.Key.from_path('Suggestion', int(suggestion_id))
-        accepted.put()
+        if int(suggestion_id) == 0:
+            accepted.delete()
+        else:
+            accepted.suggestion = db.Key.from_path('Suggestion', int(suggestion_id))
+            accepted.put()
         
         memcache.delete('photo_%s' % photo_id)
 
