@@ -5,6 +5,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 
 from google.appengine.api import urlfetch
+from google.appengine.ext import db
 
 import xml.etree.ElementTree as ET
 from django.utils import simplejson
@@ -91,10 +92,53 @@ class GeoHandler(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__), 'static/geoloc.html')        
         self.response.out.write(open(path, 'r').read())
+
+class SuggestionHandler(webapp.RequestHandler):
+    def post(self):
+        latitude = self.request.get('latitude','')
+        longitude = self.request.get('longitude','')
+        heading = self.request.get('heading','')
+        pitch = self.request.get('pitch','')
+        zoom = self.request.get('zoom','')
+        photo_id = self.request.get('photo_id','')
         
+        suggestion = Suggestion()
+        suggestion.latitude = latitude
+        suggestion.longitude = longitude
+        suggestion.heading = heading
+        suggestion.pitch = pitch
+        suggestion.zoom = zoom
+        suggestion.photo_id = photo_id
+        suggestion.put()
+
+    def get(self):
+        photo_id = self.request.get('photo_id','')
+        suggestions = Suggestion.all().filter("photo_id = ",int(photo_id))
+        suggestions_json = [{
+                'latitude':s.latitude,
+                'longitude':s.longitude,
+                'heading':s.heading,
+                'pitch':s.pitch,
+                'zoom':s.zoom,
+                'photo':s.photo_id} for s in suggestions]
+        self.response.headers["Content-Type"] = "application/json"
+        self.response.out.write(simplejson.dumps(suggestions_json))
+
+        
+
+class Suggestion(db.Model):
+    latitude = db.FloatProperty()
+    longitude = db.FloatProperty()
+    heading = db.FloatProperty()
+    pitch = db.FloatProperty()
+    zoom = db.FloatProperty()
+    photo_id = db.IntegerProperty()
+    
+
 def main():
     application = webapp.WSGIApplication([('/', MainHandler), 
                                           ('/geoloc', GeoHandler), 
+                                          ('/suggestion', SuggestionHandler),
                                           ('/list', ListHTML), 
                                           ('/list.json', ListJSON)],
                                          debug=True)
