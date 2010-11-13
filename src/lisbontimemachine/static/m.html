@@ -146,54 +146,60 @@
 
 	<body>
         <div data-role="page" data-theme="a" id="view-map">
-           <div data-role="content" data-theme="a">
-              <div data-role="header" data-position="fixed">
-                  <h1>Lx Time Machine</h1> 
-              </div>
-              <div data-role="collapsible">
-                   <h3>Now Map</h3>
-                    
-                        <div id="map_canvas" style="width: 100%; height: 240px;"></div>
-                      
-                </div>
-                <div data-role="collapsible">
-                   <h3>Look around</h3>
-                    
-                        <div id="pano" style="width: 100%; height: 240px;"></div>
-                     
-                </div>
-               <div data-role="collapsible">
-                    <h3>Then</h3>
-   		           <div id="photoViewer" style="width: 400px; height: 300px"></div> 
-               </div>
-	       </div>
-            <div data-role="footer" class="ui-bar-a ui-footer" role="contentinfo">
-                <div data-role="navbar" class="ui-navbar" role="navigation">
-                    <ul class="ui-grid-a">
-                        <li class="ui-block-a"><a data-icon="star" href="#" data-theme="a" class="ui-btn ui-btn-icon-top ui-btn-down-a"><span class="ui-btn-inner"><span class="ui-btn-text">Map</span></span></span></a></li>
-                        <li class="ui-block-b"><a data-icon="gear" href="#setup" data-theme="a" data-transition="slideup" class="ui-btn ui-btn-icon-top ui-btn-up-a ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">Setup</span></span></span></a></li>
-                    </ul>
-                </div><!-- /navbar -->
+            <div data-role="header" data-position="fixed" data-nobackbtn="true">
+                        <h1>Lx Time Machine</h1> 
             </div>
-       </div>
-       
+            <div class="ui-body ui-body-a">
+                 <div data-role="content" data-theme="a">
+                    
+                    <div data-role="collapsible">
+                         <h3>Map</h3>
+                          
+                              <div id="map_canvas" style="width: 100%; height: 240px;"></div>
+                            
+                      </div>
+                      <div data-role="collapsible">
+                         <h3>Look around</h3>
+                          
+                              <div id="pano" style="width: 100%; height: 240px;"></div>
+                           
+                      </div>
+                     <div data-role="collapsible">
+                          <h3>Way back</h3>
+         		           <div id="photoViewer" style="width: 400px; height: 300px"></div> 
+                     </div>
+      	           </div>
+                  <div data-role="footer" class="ui-bar-a ui-footer" role="contentinfo">
+                      <div data-role="navbar" class="ui-navbar" role="navigation">
+                          <ul class="ui-grid-a">
+                              <li class="ui-block-a"><a data-icon="star" href="#" data-theme="a" class="ui-btn ui-btn-icon-top ui-btn-down-a"><span class="ui-btn-inner"></span></a></li>
+                              <li class="ui-block-b"><a data-icon="gear" href="#setup" data-theme="a" data-transition="slideup" class="ui-btn ui-btn-icon-top ui-btn-up-a ui-btn-up-a"><span class="ui-btn-inner"></span></a></li>
+                          </ul>
+                      </div><!-- /navbar -->
+                  </div>
+            </div>
+         </div>
        <!-- Start of second page -->
-       <div data-role="page" id="setup">
-       
-           <div data-role="header">
-               <h1>Bar</h1>
+       <div data-role="page" id="setup" data-theme="a">
+           <div data-role="header" data-nobackbtn="true">
+               <h1>Options</h1>
            </div><!-- /header -->
-       
-           <div data-role="content">   
-               <p>I'm first in the source order so I'm shown as the page.</p>      
-               <p><a href="#foo">Back to foo</a></p>   
-           </div><!-- /content -->
-       
+          <div class="ui-body ui-body-a">
+              <div data-role="content" data-theme="a">  
+                  <div data-role="fieldcontain">
+                    <label for="useGPS">Use GPS</label>
+                    <select name="useGPS" id="useGPS" data-role="slider">
+                        <option value="off">Off</option>
+                        <option value="on">On</option>
+                    </select> 
+                   </div> 
+              </div><!-- /content -->
+          </div>
            <div data-role="footer" class="ui-bar-a ui-footer" role="contentinfo">
                 <div data-role="navbar" class="ui-navbar" role="navigation">
                     <ul class="ui-grid-a">
-                        <li class="ui-block-a"><a data-icon="star" href="#view-map" data-theme="a" data-transition="slidedown" class="ui-btn ui-btn-up-a"><span class="ui-btn-inner"></span></a></li>
-                        <li class="ui-block-b"><a data-icon="gear" href="#" data-theme="a" class="ui-btn ui-btn-icon-top ui-btn-down-a"></a></li>
+                        <li class="ui-block-a"><a data-icon="star" href="#view-map" data-iconpos="notext data-theme="a" data-transition="slidedown" class="ui-btn ui-btn-up-a"><span class="ui-btn-inner"></span></a></li>
+                        <li class="ui-block-b"><a data-icon="gear" href="#" data-theme="a" class="ui-btn ui-btn-icon-top ui-btn-down-a"><span class="ui-btn-inner"></span></a></li>
                     </ul>
                 </div><!-- /navbar -->
             </div>

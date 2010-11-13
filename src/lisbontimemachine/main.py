@@ -113,7 +113,7 @@ class SuggestionHandler(webapp.RequestHandler):
         suggestion.heading = float(heading)
         suggestion.pitch = float(pitch)
         suggestion.zoom = float(zoom)
-        suggestion.photo_id = float(photo_id)
+        suggestion.photo_id = int(photo_id)
         suggestion.put()
 
     def get(self):
@@ -125,7 +125,7 @@ class SuggestionHandler(webapp.RequestHandler):
                 'heading':s.heading,
                 'pitch':s.pitch,
                 'zoom':s.zoom,
-                'photo':s.photo_id} for s in suggestions]
+                'photo_id':s.photo_id} for s in suggestions]
         self.response.headers["Content-Type"] = "application/json"
         self.response.out.write(simplejson.dumps(suggestions_json))
 
