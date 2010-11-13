@@ -175,6 +175,7 @@
 						'pitch=' + pitch + '&' +
 						'zoom=' + zoom,
 				   success: function(data, status, request){
+                                     $(".status").text("Got it, thanks!");
 				     //alert( "Data Saved: " + status );
 				   }
 				 }).responseText;
@@ -214,6 +215,7 @@
             <div id="" class="grid_4 ">
 		<div id="pano" style="width: 310px; height: 300px;"></div> 
                 <input type="button" value="Suggest current point of view" onclick="sendPovFromPanorama();">
+                <div class="status"></div>
             </div>
             
             <div id="" class="grid_4 ">
