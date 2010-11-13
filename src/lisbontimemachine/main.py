@@ -108,11 +108,15 @@ class AdminHandler(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'static/admin.html')        
         self.response.out.write(open(path, 'r').read())
 
-    def post(self):
+
+class AcceptedSuggestionHandler(webapp.RequestHandler):
+    def get(self):
         photo_id = self.request.get("photo_id","")
         suggestion_id = self.request.get("suggestion_id","")
         
-        AcceptedSuggestion.get_or_insert(key_name=photo_id, suggestion = db.Key.from_path('Suggestion', suggestion_id))
+        accepted = AcceptedSuggestion.get_or_insert(key_name=photo_id)
+        accepted.suggestion = db.Key.from_path('Suggestion', int(suggestion_id))
+        accepted.put()
 
 class MobileHandler(webapp.RequestHandler):
     def get(self):
@@ -146,14 +150,14 @@ class SuggestionHandler(webapp.RequestHandler):
         photo_id = self.request.get('photo_id','')
         suggestions = Suggestion.all().filter("photo_id = ",int(photo_id))
         suggestions_json = [{
-                'key':str(s.key()),
+                'key':s.key().id(),
                 'latitude':s.latitude,
                 'longitude':s.longitude,
                 'heading':s.heading,
                 'pitch':s.pitch,
                 'zoom':s.zoom,
                 'photo_id':s.photo_id} for s in suggestions]
-        self.response.headers["Content-Type"] = "application/json"
+        # self.response.headers["Content-Type"] = "application/json"
         self.response.out.write(simplejson.dumps(suggestions_json))        
 
 class Suggestion(db.Model):
@@ -173,6 +177,7 @@ def main():
                                           ('/m', MobileHandler), 
                                           ('/suggestion', SuggestionHandler),
                                           ('/admin',AdminHandler),
+                                          ('/accept', AcceptedSuggestionHandler),
                                           ('/list', ListHTML), 
                                           ('/list.json', ListJSON)],
                                          debug=True)
