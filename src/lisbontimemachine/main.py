@@ -88,9 +88,9 @@ class MainHandler(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'static/index.html')        
         self.response.out.write(open(path, 'r').read())
 
-class GeoHandler(webapp.RequestHandler):
+class MobileHandler(webapp.RequestHandler):
     def get(self):
-        path = os.path.join(os.path.dirname(__file__), 'static/geoloc.html')        
+        path = os.path.join(os.path.dirname(__file__), 'static/m.html')        
         self.response.out.write(open(path, 'r').read())
 
 class AboutHandler(webapp.RequestHandler):
@@ -143,7 +143,7 @@ class Suggestion(db.Model):
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
                                           ('/about', AboutHandler), 
-                                          ('/geoloc', GeoHandler), 
+                                          ('/m', MobileHandler), 
                                           ('/suggestion', SuggestionHandler),
                                           ('/list', ListHTML), 
                                           ('/list.json', ListJSON)],
