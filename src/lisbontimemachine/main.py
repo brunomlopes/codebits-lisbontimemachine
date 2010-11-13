@@ -108,12 +108,12 @@ class SuggestionHandler(webapp.RequestHandler):
         photo_id = self.request.get('photo_id','')
         
         suggestion = Suggestion()
-        suggestion.latitude = latitude
-        suggestion.longitude = longitude
-        suggestion.heading = heading
-        suggestion.pitch = pitch
-        suggestion.zoom = zoom
-        suggestion.photo_id = photo_id
+        suggestion.latitude = float(latitude)
+        suggestion.longitude = float(longitude)
+        suggestion.heading = float(heading)
+        suggestion.pitch = float(pitch)
+        suggestion.zoom = float(zoom)
+        suggestion.photo_id = float(photo_id)
         suggestion.put()
 
     def get(self):
