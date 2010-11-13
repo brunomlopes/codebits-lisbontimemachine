@@ -109,6 +109,7 @@
 							}
 							map.setCenter(mapMarker.position);
 							panorama.setPosition(mapMarker.position);
+
 							
 							
 							
@@ -121,7 +122,26 @@
 							$('#photoViewer').html(imgHTML);
 							
 							selectedPhotoID = item.id;
-							//$("#photoViewer").html("<span class='red'>Hello <b>Again</b></span>");
+
+                            $.getJSON('/suggestion?photo_id=' + selectedPhotoID, function(data) {
+                                var output = '<li class="suggestions" id="0">None</li>'; // FIXME:server side delete if zero
+                                $.each(data, function () {
+                                    console.log(this);
+                                    output += '<li class="suggestions" id=' + this.key + '>Suggestion ' + this.key + '</li>';
+                                });
+                                $("#suggestions").html(output);
+                                $("#suggestions li").click(function () {
+                                    var suggestionID = $(this).attr('id');
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "accept",
+                                        data: 'photo_id=' + selectedPhotoID + '&' + 'suggestion_id=' + suggestionID,
+                                        success: function(data, status, request) {
+                                                          $(".status").text("Got it (the new accepted suggestion, duh), thanks!");
+                                        }
+                                    });
+                                });   
+                            });
 						});
 
 						  var panoramaMarker = new google.maps.Marker({
@@ -222,6 +242,11 @@
 	      <div id="photoViewer" style="width: 310px; height: 300px"></div> 
 
             </div>
+            <span class="clear"></span>
+          </div>
+          <div class="container_12">
+            <ul id="suggestions">
+            </ul>
             <span class="clear"></span>
           </div>
           <div id="footer" class="container_12">
