@@ -60,7 +60,7 @@ def get_image_elements(latitude, longitude):
             
             accepted = AcceptedSuggestion.get_by_key_name(article_id)
             if accepted is not None:
-                suggestion = Suggestion.get(accepted.suggestion)
+                suggestion = accepted.suggestion
                 photo_item["is_suggestion"] = True
                 photo_item["latitude"] = suggestion.latitude
                 photo_item["longitude"] = suggestion.longitude
