@@ -13,6 +13,8 @@ handlers:
 - url: /oldbit.png
   static_files: static/oldbit.png
   upload: static/oldbit.png
+- url: /static/
+  static_dir: static/
 - url: /js/yqlgeo.js
   static_files: js/yqlgeo.js
   upload: js/yqlgeo.js
