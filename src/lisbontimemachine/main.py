@@ -117,6 +117,8 @@ class AcceptedSuggestionHandler(webapp.RequestHandler):
         accepted = AcceptedSuggestion.get_or_insert(key_name=photo_id)
         accepted.suggestion = db.Key.from_path('Suggestion', int(suggestion_id))
         accepted.put()
+        
+        memcache.delete('photo_%s' % photo_id)
 
 class MobileHandler(webapp.RequestHandler):
     def get(self):
