@@ -161,7 +161,7 @@
 						'pitch = ' + pitch + '\r\n' +
 						'zoom = ' + zoom + '\r\n';
 						
-				alert(txt);
+				// alert(txt);
 				
 
 				
@@ -175,11 +175,11 @@
 						'pitch=' + pitch + '&' +
 						'zoom=' + zoom,
 				   success: function(data, status, request){
-				     alert( "Data Saved: " + status );
+				     //alert( "Data Saved: " + status );
 				   }
 				 }).responseText;
 				
-				alert(responseContent);
+				//alert(responseContent);
 			}
 			
 			
@@ -213,17 +213,18 @@
             
             <div id="" class="grid_4 ">
 		<div id="pano" style="width: 310px; height: 300px;"></div> 
+                <input type="button" value="Suggest current point of view" onclick="sendPovFromPanorama();">
             </div>
             
             <div id="" class="grid_4 ">
 	      <div id="photoViewer" style="width: 310px; height: 300px"></div> 
-              <input type="button" value="Send POV Data" onclick="sendPovFromPanorama();">
+
             </div>
             <span class="clear"></span>
           </div>
           <div id="footer" class="container_12">
 
-            <div id="" class="grid_12" style="text-align: right; padding-top: 20px">
+            <div id="" class="grid_12" style="text-align: left; padding-top: 20px">
                 <a href="/about">About</a>
             </div>
             <span class="clear"></span>
