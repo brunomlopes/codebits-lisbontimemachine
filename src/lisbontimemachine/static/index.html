@@ -117,7 +117,7 @@
 							lastInfoWindow = mapInfowindow;
 							
 							//	panorama.setPov({heading: 140, pitch: +10, zoom: 1});
-							var imgHTML = "<img src='" + item.image_url + "' />";
+                                                        var imgHTML = "<a href="+item.image_url+" target='_blank'><img src='" + item.image_url + "' width='300px'  style='border:none' /></a>";
 							$('#photoViewer').html(imgHTML);
 							
 							selectedPhotoID = item.id;
