@@ -18,6 +18,7 @@
 		</script>
 
 		<script language="javascript">
+	        var loaded_photos = null;
 			var map = null;
 			var panorama = null;
 			var lastInfoWindow = null;
@@ -69,7 +70,7 @@
 				var url = 'list.json?latitude=' + lat + '&longitude=' + lng;
 				$.getJSON(url,
 				  function(data) {
-
+				    loaded_photos = data;
 				    $.each(data, function(i,item){
 						/*
 						"title": "Largo do Marqu\u00eas de Angeja",
