@@ -6,6 +6,7 @@ from google.appengine.ext.webapp import util
 
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
+from google.appengine.api import users
 
 import xml.etree.ElementTree as ET
 from django.utils import simplejson
@@ -56,6 +57,17 @@ def get_image_elements(latitude, longitude):
                 'latitude': article_element.findtext('getArticle/article/latitude'),            
                 'longitude': article_element.findtext('getArticle/article/longitude')
             }
+            
+            accepted = AcceptedSuggestion.get_by_key_name(photo_item)
+            if accepted is not None:
+                suggestion = Suggestion.get(accepted.suggestion)
+                photo_item["is_suggestion"] = True
+                photo_item["latitude"] = suggestion.latitude
+                photo_item["longitude"] = suggestion.longitude
+                photo_item["heading"] = suggestion.heading
+                photo_item["pitch"] = suggestion.pitch
+                photo_item["zoom"] = suggestion.zoom
+
             memcache.set('photo_%s' % article_id, photo_item, 60 * 10)
         image_elements.append(photo_item)
     return image_elements
@@ -87,6 +99,20 @@ class MainHandler(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__), 'static/index.html')        
         self.response.out.write(open(path, 'r').read())
+
+class AdminHandler(webapp.RequestHandler):
+    def get(self):
+        if not users.get_current_user() or not users.is_current_user_admin():
+            self.response.out.write("<a href='"+users.create_login_url("/admin")+"'>42</a>")
+            return
+        path = os.path.join(os.path.dirname(__file__), 'static/admin.html')        
+        self.response.out.write(open(path, 'r').read())
+
+    def post(self):
+        photo_id = self.request.get("photo_id","")
+        suggestion_id = self.request.get("suggestion_id","")
+        
+        AcceptedSuggestion.get_or_insert(key_name=photo_id, suggestion = db.Key.from_path('Suggestion', suggestion_id))
 
 class MobileHandler(webapp.RequestHandler):
     def get(self):
@@ -120,6 +146,7 @@ class SuggestionHandler(webapp.RequestHandler):
         photo_id = self.request.get('photo_id','')
         suggestions = Suggestion.all().filter("photo_id = ",int(photo_id))
         suggestions_json = [{
+                'key':str(s.key()),
                 'latitude':s.latitude,
                 'longitude':s.longitude,
                 'heading':s.heading,
@@ -127,9 +154,7 @@ class SuggestionHandler(webapp.RequestHandler):
                 'zoom':s.zoom,
                 'photo_id':s.photo_id} for s in suggestions]
         self.response.headers["Content-Type"] = "application/json"
-        self.response.out.write(simplejson.dumps(suggestions_json))
-
-        
+        self.response.out.write(simplejson.dumps(suggestions_json))        
 
 class Suggestion(db.Model):
     latitude = db.FloatProperty()
@@ -138,13 +163,16 @@ class Suggestion(db.Model):
     pitch = db.FloatProperty()
     zoom = db.FloatProperty()
     photo_id = db.IntegerProperty()
-    
+
+class AcceptedSuggestion(db.Model):
+    suggestion = db.ReferenceProperty(Suggestion)
 
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
                                           ('/about', AboutHandler), 
                                           ('/m', MobileHandler), 
                                           ('/suggestion', SuggestionHandler),
+                                          ('/admin',AdminHandler),
                                           ('/list', ListHTML), 
                                           ('/list.json', ListJSON)],
                                          debug=True)
