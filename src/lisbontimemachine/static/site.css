@@ -4,8 +4,11 @@
 	margin-left: auto;
 	margin-right: auto;
 	width: 960px;
-	
-	
+	background-color:#ffffff;
+}
+
+body { 
+    background-color:#704214;
 }
 
 /* Grid >> Children (Alpha ~ First, Omega ~ Last)
@@ -19,7 +22,14 @@
 	margin-right: 0 !important;
 }
 
+#footer {
+    height:auto;
+    padding-bottom:20px;
+}
 
+#footer .grid_12{
+    padding-right:50px;
+}
 
 /* Grid >> Global
 ----------------------------------------------------------------------------------------------------*/
