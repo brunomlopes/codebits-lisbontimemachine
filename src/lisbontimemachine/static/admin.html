@@ -126,7 +126,6 @@
                             $.getJSON('/suggestion?photo_id=' + selectedPhotoID, function(data) {
                                 var output = '<li class="suggestions" id="0">None</li>'; // FIXME:server side delete if zero
                                 $.each(data, function () {
-                                    console.log(this);
                                     output += '<li class="suggestions" id=' + this.key + '>Suggestion ' + this.key + '</li>';
                                 });
                                 $("#suggestions").html(output);
